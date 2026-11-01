@@ -32,9 +32,10 @@ from utils import (
 )
 from logger import logger
 from auditor_manager import auditor_manager
+from paths import get_base_dir
 
-# Chemin du fichier de données
-DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
+# Chemin du fichier de données (à côté de l'exécutable si empaqueté)
+DATA_DIR = os.path.join(get_base_dir(), "data")
 AUDITORS_FILE = os.path.join(DATA_DIR, "auditors.json")
 SUPERVISORS_FILE = os.path.join(DATA_DIR, "supervisors.json")
 PLANNING_FILE = os.path.join(DATA_DIR, "current_planning.json")

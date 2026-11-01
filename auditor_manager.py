@@ -18,7 +18,8 @@ class AuditorManager:
 
     def __init__(self, data_dir: str = None):
         if data_dir is None:
-            data_dir = os.path.join(os.path.dirname(__file__), 'data')
+            from paths import get_base_dir
+            data_dir = os.path.join(get_base_dir(), 'data')
         self.data_dir = data_dir
         self.profiles_file = os.path.join(data_dir, 'auditor_profiles.json')
         self._profiles: List[AuditorProfile] = []
