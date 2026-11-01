@@ -41,7 +41,8 @@ class AuditLogger:
 
     def _setup_file_logger(self):
         """Configure le logger fichier."""
-        log_dir = os.path.join(os.path.dirname(__file__), 'logs')
+        from paths import get_base_dir
+        log_dir = os.path.join(get_base_dir(), 'logs')
         os.makedirs(log_dir, exist_ok=True)
 
         log_file = os.path.join(log_dir, f'audit_{datetime.now().strftime("%Y%m%d")}.log')

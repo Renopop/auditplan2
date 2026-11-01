@@ -1,0 +1,17 @@
+# Environnements virtuels
+.venv/
+.venv-build/
+venv/
+
+# Python
+__pycache__/
+*.pyc
+
+# PyInstaller
+build/
+dist/
+
+# Données générées à l'exécution
+data/
+logs/
+.streamlit/

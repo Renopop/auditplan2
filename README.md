@@ -34,6 +34,13 @@ venv\Scripts\activate  # Windows
 pip install -r requirements.txt
 ```
 
+## Exécutable Windows (.exe)
+
+Pour distribuer l'application sous forme d'un **fichier .exe unique**, sans
+installation de Python sur le poste cible, lancer `build.bat` sur un poste
+Windows. Le fichier `dist\AuditPlan.exe` est généré en quelques minutes.
+Voir [BUILD_EXE.md](BUILD_EXE.md) pour le détail.
+
 ## Utilisation
 
 ### Lancer l'application
