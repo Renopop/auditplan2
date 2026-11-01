@@ -1,0 +1,7 @@
+streamlit>=1.28.0
+pandas>=2.0.0
+openpyxl>=3.1.0
+pulp>=2.7.0
+numpy>=1.24.0
+highspy>=1.5.0  # Solveur HiGHS plus rapide que CBC
+ortools>=9.8  # Solveur CP-SAT (moteur d'optimisation recommandé, exact & rapide)
