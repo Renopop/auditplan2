@@ -51,25 +51,6 @@ def wait_and_open_browser(url: str, port: int, timeout: float = 60.0) -> None:
         time.sleep(0.3)
 
 
-def configure_streamlit(port: int) -> None:
-    """Configure Streamlit via variables d'environnement (lues à l'import)."""
-    base_dir = get_base_dir()
-    env = {
-        "STREAMLIT_SERVER_PORT": str(port),
-        "STREAMLIT_SERVER_ADDRESS": "127.0.0.1",
-        "STREAMLIT_SERVER_HEADLESS": "true",          # on ouvre le navigateur nous-mêmes
-        "STREAMLIT_SERVER_FILE_WATCHER_TYPE": "none",  # inutile et fragile dans un .exe
-        "STREAMLIT_SERVER_RUN_ON_SAVE": "false",
-        "STREAMLIT_BROWSER_GATHER_USAGE_STATS": "false",
-        "STREAMLIT_GLOBAL_DEVELOPMENT_MODE": "false",
-        "STREAMLIT_CLIENT_TOOLBAR_MODE": "viewer",
-        # Évite l'écriture de fichiers de config dans le profil utilisateur
-        "STREAMLIT_CONFIG_DIR": os.path.join(base_dir, ".streamlit"),
-    }
-    for key, value in env.items():
-        os.environ.setdefault(key, value)
-
-
 def print_banner(url: str) -> None:
     print()
     print("  ============================================================")
@@ -89,7 +70,6 @@ def print_banner(url: str) -> None:
 def main() -> None:
     port = find_free_port()
     url = f"http://127.0.0.1:{port}"
-    configure_streamlit(port)
 
     app_path = os.path.join(get_resource_dir(), "app.py")
     if not os.path.exists(app_path):
@@ -109,17 +89,26 @@ def main() -> None:
 
     from streamlit.web import bootstrap
 
+    # Options de configuration, au format attendu par load_config_options
+    # (clés « section_option », comme les drapeaux de la ligne de commande).
+    # global_developmentMode=False est indispensable dans l'exécutable : sans
+    # cela Streamlit se croit en mode développement (port 3000, pas de
+    # fichiers statiques servis, logs de debug).
+    flag_options = {
+        "global_developmentMode": False,
+        "server_port": port,
+        "server_address": "127.0.0.1",
+        "server_headless": True,
+        "server_fileWatcherType": "none",
+        "server_runOnSave": False,
+        "browser_gatherUsageStats": False,
+        "logger_level": "info",
+        "client_toolbarMode": "minimal",  # masque le bouton « Deploy »
+    }
+    bootstrap.load_config_options(flag_options)
+
     # Streamlit s'attend à un argv de la forme « streamlit run app.py »
     sys.argv = ["streamlit", "run", app_path]
-    flag_options = {
-        "server.port": port,
-        "server.address": "127.0.0.1",
-        "server.headless": True,
-        "server.fileWatcherType": "none",
-        "server.runOnSave": False,
-        "browser.gatherUsageStats": False,
-        "global.developmentMode": False,
-    }
     bootstrap.run(app_path, False, [], flag_options)
 
 
